@@ -19,4 +19,5 @@ model Customer {
   name  String
   email String @unique
   phone String
+  credit Int?
 }
