@@ -15,9 +15,29 @@ datasource db {
 }
 
 model Customer {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  email  String  @unique
+  phone  String
+  credit Int? // nullable
+  Order  Order[]
+}
+
+model Order {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @db.ObjectId
+  amount     Int
+  Product    Product? @relation(fields: [productId], references: [id])
+  productId  String?  @db.ObjectId
+}
+
+// npx prisma generate
+// npx prisma db push
+
+model Product {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
   name  String
-  email String @unique
-  phone String
-  credit Int?
+  price Int
+  Order Order[]
 }
