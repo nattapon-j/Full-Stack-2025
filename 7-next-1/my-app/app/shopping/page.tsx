@@ -2,6 +2,7 @@ import ServerComponent from "../server-component/page";
 import ClientComponent from "../client-component/page";
 
 import Header from "../props/page";
+import UserProfile from "../multi-props/page";
 
 export default function Page() {
     return (
@@ -14,6 +15,11 @@ export default function Page() {
 
             {/* <h1>Client component</h1> */}
             <ClientComponent />
+
+            <div>
+                <h1>Multi Props</h1>
+                <UserProfile name="John Doe" age={30} email="john@example.com" isAdmin={true} />
+            </div>
         </div>
     );
 }
