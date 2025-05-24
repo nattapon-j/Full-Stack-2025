@@ -3,18 +3,28 @@
 import { useState } from 'react';
 
 export default function DropdownList() {
+    const [foodList, setFoodList] = useState([
+        {name: 'Pizza'},
+        {name: 'Burger'},
+        {name: 'Sushi'},
+        {name: 'Salad'},
+        {name: 'Pasta'},
+        {name: 'Tacos'},
+        {name: 'Ice Cream'},
+    ]);
+
     const [food, setFood] = useState('pizza');
 
     return (
         <div>
             <select
-                value={food}
                 onChange={(e) => setFood(e.target.value)}
             >
-                <option value="pizza">Pizza</option>
-                <option value="burger">Burger</option>
-                <option value="sushi">Sushi</option>
-                <option value="salad">Salad</option>
+                {foodList.map((item, index) => (
+                    <option key={index} value={item.name}>
+                        {item.name}
+                    </option>
+                ))}
             </select>
             <div>
                 <div>Your selected food</div>
