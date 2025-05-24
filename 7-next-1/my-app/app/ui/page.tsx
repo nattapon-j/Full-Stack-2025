@@ -1,6 +1,7 @@
 // import Checkbox from "./checkbox";
 
-import RadioBox from "./radiobox";
+import DropdownList from "./dropdownlist";
+// import RadioBox from "./radiobox";
 
 export default function Page() {
     return (
@@ -8,7 +9,9 @@ export default function Page() {
             {/* <h1>Checkbox</h1>
             <Checkbox /> */}
 
-            <RadioBox />
+            {/* <RadioBox /> */}
+
+            <DropdownList />
         </div>
     )
 }
