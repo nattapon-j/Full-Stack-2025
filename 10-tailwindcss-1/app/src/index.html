@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="output.css">
+    <!-- Link to the compiled Tailwind CSS file -->
+</head>
+
+<body>
+    <h1 class="text-4xl font-bold text-blue-500">Hello Taillwind CSS!</h1>
+    <h1 class="text-sm">Hello Taillwind CSS!</h1>
+    <h1 class="text-md">Hello Taillwind CSS!</h1>
+    <h1 class="text-lg">Hello Taillwind CSS!</h1>
+    <h1 class="text-xl">Hello Taillwind CSS!</h1>
+    <h1 class="text-4xl">Hello Taillwind CSS!</h1>
+
+    <h1 class="text-4xl text-blue-950">Max Detensity (50-)950</h1>
+
+    <div class="bg-red-500">
+        <h1 class="text-4xl text-blue-500">Hello Taillwind CSS!</h1>
+    </div>
+
+    <div class="bg-gray-500 pt-4 pb-4 pl-4 pr-4">
+        <!-- p-4 for all padding -->
+        <!-- px-4 py-4 for horizontal and vertical padding -->
+        <!-- pt-[10px] for top padding in pixels -->
+        <h1 class="text-4xl text-blue-500">Hello Taillwind CSS!</h1>
+    </div>
+
+    <!-- margin -->
+    <div class="bg-green-500 pt-10 mt-10 ml-4">
+        <h1 class="text-4xl text-blue-500">Hello Taillwind CSS!</h1>
+    </div>
+
+    <!-- width -->
+    <div class="bg-blue-500 w-64">
+        <h1 class="text-4xl text-blue-500">Hello Taillwind CSS!</h1>
+    </div>
+    <!-- flex -->
+    <div class="w-screen h-screen bg-red-500 
+    flex flex-col justify-center items-center">
+        <!-- flex-col for vertical alignment -->
+        <!-- flex-row for horizontal alignment -->
+        <!-- justify-center for vertical centering -->
+        <!-- items-center for horizontal centering -->
+
+        <!-- Nav bar -->
+        <nav class="w-full bg-black h-14 text-white
+        flex items-center justify-between px-4">
+            <!-- justify-around -->
+            <div class="bg-green-500 p-2">
+                <p>Icon</p>
+            </div>
+
+            <div>
+                Logout
+            </div>
+
+            <div>
+                Logout
+            </div>
+
+            <div>
+                Logout
+            </div>
+        </nav>
+
+        <div class="bg-gray-500 
+        w-[140px] h-[140px] m-4 
+        border-2 border-green-500
+        rounded-md
+        text-center
+        flex justify-center items-center">
+            <!-- text-center -->
+            <!-- text-left -->
+            <!-- rounded-full -->
+            <!-- rounded -->
+            <!-- border-x -->
+            <!-- border-y -->
+            <h1 class="text-2xl text-blue-500">Hello Taillwind CSS!</h1>
+        </div>
+
+        <div class="ml-4">
+            <button class="bg-yellow-500 px-4 py-2 border-2 border-black 
+            rounded-md
+            text-white">Button 1</button>
+
+            <button class="bg-green-500 px-4 py-2 border-2 border-black 
+            rounded-lg
+            text-white">Button 2</button>
+
+            <button class="bg-black px-4 py-2 border-2 border-black 
+            rounded-xl
+            text-white">Button 3</button>
+
+            <button class="bg-blue-500 px-4 py-2 border-2 border-black 
+            rounded-full
+            text-white
+            hover:bg-orange-500
+            hover:text-black 
+            transition-all duration-500
+            hover:scale-105
+            hover:-translate-y-1">Button 4</button>
+            <!-- hover -->
+        </div>
+
+        <!--  -->
+        <div class="mt-4 flex flex-col gap-y-2">
+            <!-- gap-4 instead of margin (mt-4)-->
+            <div class="bg-green-500 w-10 h-10 rounded">1</div>
+            <div class="bg-green-500 w-10 h-10 rounded">2</div>
+            <div class="bg-green-500 w-10 h-10 rounded">3</div>
+            <div class="bg-green-500 w-10 h-10 rounded">4</div>
+        </div>
+
+        <div class="mt-4 flex gap-x-2
+        bg-yellow-500
+        justify-end
+        w-full">
+            <!-- justify-start -->
+            <!-- justify-center -->
+            <div class="bg-green-500 w-10 h-10 rounded">1</div>
+            <div class="bg-green-500 w-10 h-10 rounded">2</div>
+            <div class="bg-green-500 w-10 h-10 rounded">3</div>
+            <div class="bg-green-500 w-10 h-10 rounded">4</div>
+        </div>
+    </div>
+
+</body>
+
+</html>
