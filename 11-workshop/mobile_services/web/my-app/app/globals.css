@@ -3,3 +3,30 @@
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signin-box {
+  @apply rounded-lg p-5 bg-white shadow-lg shadow-purple-800 flex flex-col items-start;
+}
+
+.signin-box h1 {
+  @apply mb-5;
+}
+
+input {
+  @apply p-2 rounded-md border border-gray-300;
+}
+
+body {
+  @apply bg-gradient-to-tr from-blue-600 to-teal-700;
+}
+
+.signin-box button {
+  @apply mt-4 bg-teal-600 text-white px-6 py-2 rounded-md;
+}
