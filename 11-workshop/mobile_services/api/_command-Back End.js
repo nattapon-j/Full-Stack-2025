@@ -18,3 +18,6 @@ node --watch server.js
 
 npm i jsonwebtoken
 npm i dotenv
+
+// 14-Workshop-3
+npx prisma db push 

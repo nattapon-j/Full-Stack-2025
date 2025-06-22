@@ -36,6 +36,6 @@ body {
 }
 
 .content-header {
-  @apply text-2xl font-bold mb-5 pt-5 pb-3 border-b-2 border-teal-600 text-teal-600
+  @apply text-2xl font-bold mb-5 pt-0 pb-3 border-b-2 border-teal-600 text-teal-600
   /* @apply text-2xl font-bold mb-5 bg-gray-200 p-5 rounded-lg shadow-lg shadow-gray-500; */
 }

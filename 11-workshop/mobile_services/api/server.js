@@ -5,6 +5,7 @@ const port = 3001;
 const cors = require('cors');
 
 const { UserController } = require('./controllers/UserController');
+const { CompanyController } = require('./controllers/CompanyController');
 
 app.use(cors());
 app.use(express.json());
@@ -15,6 +16,9 @@ app.get('/', (req, res) => {
 });
 
 app.post("/api/user/signin", UserController.signIn);
+
+app.post("/api/company/create", CompanyController.createCompany);
+app.get("/api/company/list", CompanyController.list); 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
