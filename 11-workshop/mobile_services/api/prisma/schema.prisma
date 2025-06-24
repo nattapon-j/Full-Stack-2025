@@ -31,3 +31,17 @@ model Company {
   email   String?
   taxId   String
 }
+
+model Product {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  serialNumber    String
+  itemName        String
+  itemPrice       Float
+  itemModel       String
+  itemColor       String
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  remarks         String
+  status          String @default("available")
+}
