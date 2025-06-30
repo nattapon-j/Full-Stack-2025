@@ -34,7 +34,7 @@ model Company {
 
 model Product {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
-  serialNumber    String
+  serialNumber    String?
   itemName        String
   itemPrice       Float
   itemModel       String

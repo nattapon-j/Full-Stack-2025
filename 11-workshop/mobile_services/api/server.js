@@ -19,9 +19,13 @@ app.get('/', (req, res) => {
 app.post("/api/user/signin", UserController.signIn);
 
 app.post("/api/company/create", CompanyController.createCompany);
-app.get("/api/company/list", CompanyController.list); 
+app.get("/api/company/list", CompanyController.list);
 
 app.post("/api/buy/add", ProductController.createProduct);
+app.get("/api/buy/list", ProductController.listProduct);
+app.put("/api/buy/update/:id", ProductController.updateProduct);
+app.delete("/api/buy/delete/:id", ProductController.deleteProduct);
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

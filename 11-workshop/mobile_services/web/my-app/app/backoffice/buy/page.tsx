@@ -29,6 +29,28 @@ export default function Page() {
     const [customerAddress, setCustomerAddress] = useState("");
     const [remarks, setRemarks] = useState("");
 
+    const [products, setProducts] = useState([]);
+    const [itemId, setItemId] = useState(0);
+
+    const [qty, setQty] = useState(1); // Initialize qty with a default value
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${config.apiUrl}/buy/list`);
+            setProducts(response.data);
+        } catch (err: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.message
+            });
+        }
+    }
+
     const handleSaveItem = async () => {
         try {
             const payload = {
@@ -40,18 +62,29 @@ export default function Page() {
                 customerName: customerName,
                 customerPhone: customerPhone,
                 customerAddress: customerAddress,
-                remarks: remarks
+                remarks: remarks,
+                qty: qty, // Include qty in the payload if needed
             };
-            const response = await axios.post(`${config.apiUrl}/buy/add`, payload); 
-            // /create
+
+            if (itemId === 0) {
+                const response = await axios.post(`${config.apiUrl}/buy/add`, payload);
+                // /create
+            } else {
+                // payload.id = itemId; // Include the itemId in the payload for update
+                const response = await axios.put(`${config.apiUrl}/buy/update/${itemId}`, payload);
+                // /update
+                setItemId(0); // Reset itemId after update
+            }
 
             // if (response.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Item Added Successfully',
-                    text: 'The item has been added to the buy list.',
-                });
-            //     handleCloseModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Item Added Successfully',
+                text: 'The item has been added to the buy list.',
+                timer: 2000
+            });
+            handleCloseModal();
+            fetchData();
             // } else {
             //     Swal.fire({
             //         icon: 'error',
@@ -59,14 +92,92 @@ export default function Page() {
             //         text: 'Failed to add the item. Please try again.',
             //     });
             // }
-        } catch (error) {
+        // } catch (error) {
+        } catch (error: any) {
             console.error("Error saving item:", error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'An error occurred while saving the item. Please try again.',
+                // text: 'An error occurred while saving the item. Please try again.',
+                text: error.message || 'An error occurred while saving the item. Please try again.',
             });
         }
+    };
+
+    const handleEditItem = (id: number) => {
+        const item = products.find((product: any) => product.id === id) as any;
+        if (item) {
+            setSerialNumber(item.serialNumber ?? '');
+            setItemName(item.itemName);
+            setItemPrice(item.itemPrice);
+            setItemModel(item.itemModel);
+            setItemColor(item.itemColor);
+            setCustomerName(item.customerName);
+            setCustomerPhone(item.customerPhone);
+            setCustomerAddress(item.customerAddress ?? '');
+            setRemarks(item.remarks ?? '');
+            setItemId(item.id);
+            // setIsModalOpen(true);
+            handleOpenModal();
+        }
+        // const response = await axios.get(`${config.apiUrl}/buy/edit/${id}`);
+        // const item = response.data;
+        // setSerialNumber(item.serialNumber);
+        // setItemName(item.itemName);
+        // setItemPrice(item.itemPrice);
+        // setItemModel(item.itemModel);
+        // setItemColor(item.itemColor);
+        // setCustomerName(item.customerName);
+        // setCustomerPhone(item.customerPhone);
+        // setCustomerAddress(item.customerAddress);
+        // setRemarks(item.remarks);
+
+    };
+
+    const handleDeleteItem = async (id: string) => {
+        try {
+            const button = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                // showConfirmButton: true,
+            });
+            if (button.isConfirmed) {
+                await axios.delete(`${config.apiUrl}/buy/delete/${id}`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Your item has been deleted.',
+                });
+                fetchData();
+            }
+        } catch (error) {
+            console.error("Error deleting item:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while deleting the item. Please try again.',
+            });
+        }
+    };
+
+    const handleReset = () => {
+        setSerialNumber("");
+        setItemName("");
+        setItemPrice(0);
+        setItemModel("");
+        setItemColor("");
+        setCustomerName("");
+        setCustomerPhone("");
+        setCustomerAddress("");
+        setRemarks("");
+        setQty(1); // Reset qty to default value
+        // setItemId(0);
+        // handleCloseModal();
     };
 
     return (
@@ -75,10 +186,51 @@ export default function Page() {
             <p>This is the Buy page. You can implement your buy functionality here.</p>
 
             <div>
-                <button className="btn" onClick={handleOpenModal}>
+                <button className="btn" onClick={() => {
+                    handleReset();
+                    handleOpenModal();
+                }}>
                     <i className="fa-solid fa-plus mr-2"></i>
                     Add New Item
                 </button>
+
+                <table className="table mt-4">
+                    <thead>
+                        <tr>
+                            <th>Serial Number</th>
+                            <th>Item Name</th>
+                            <th>Item Price</th>
+                            <th>Item Model</th>
+                            <th>Item Color</th>
+                            <th>Customer Name</th>
+                            <th>Customer Phone</th>
+                            <th>Remarks</th>
+                            <th className="w-[110px]">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {products.map((product: any) => (
+                            <tr key={product.id}>
+                                <td>{product.serialNumber}</td>
+                                <td>{product.itemName}</td>
+                                <td>{product.itemPrice}</td>
+                                <td>{product.itemModel}</td>
+                                <td>{product.itemColor}</td>
+                                <td>{product.customerName}</td>
+                                <td>{product.customerPhone}</td>
+                                <td>{product.remarks}</td>
+                                <td className="text-center">
+                                    <button className="btn-edit mr-1" onClick={() => handleEditItem(product.id)}>
+                                        <i className="fa-solid fa-edit"></i>
+                                    </button>
+                                    <button className="btn-delete" onClick={() => handleDeleteItem(product.id)}>
+                                        <i className="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
             <Modal title="Add New Item" isOpen={isModalOpen} onClose={handleCloseModal}>
@@ -114,6 +266,10 @@ export default function Page() {
                     </div>
                     <div className="mt-2">Remarks:
                         <input type="text" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+                    </div>
+
+                    <div className="mt-2">Qty:
+                        <input type="text" value={qty} onChange={(e) => setQty(Number(e.target.value ?? 0))} />
                     </div>
 
                     <div className="mt-2">
