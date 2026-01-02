@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.post("/api/user/signin", UserController.signIn);
+app.get("/api/user/profile", UserController.getProfile);
 
 app.post("/api/company/create", CompanyController.createCompany);
 app.get("/api/company/list", CompanyController.list);

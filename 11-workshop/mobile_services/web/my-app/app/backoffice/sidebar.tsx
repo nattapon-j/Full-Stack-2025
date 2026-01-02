@@ -1,18 +1,57 @@
+'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import { config } from '../config';
+import { useEffect, useState } from 'react';
 
 export default function Sidebar() {
+
+    const [name, setName] = useState('');
+    const [level, setLevel] = useState('');
+
+    const router = useRouter();
+
+    useEffect(() => {
+        fetchProfile();
+    }, []);
+
+    const fetchProfile = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${config.apiUrl}/user/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setName(response.data.name);
+            setLevel(response.data.level);
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            Swal.fire('Error', 'Failed to fetch profile information', 'error');
+        }
+    };
+
+    const handleLogout = () => {
+        // Implement logout functionality here
+        localStorage.removeItem('token');
+        router.push('/');
+    }
+
     return (
         <div className="bg-teal-600 h-screen w-64 fixed">
             <div className="p-5 bg-teal-800 text-white">
                 <h1 className='text-xl'>Mobile Services Version 1.0</h1>
                 <div className='flex items-center gap-2 mt-3'>
                     <i className='fa fa-user'></i>
-                    <span className='w-full'>Nattapon Jutamas</span>
+                    <span className='w-full'>{name} : {level}</span>
 
                     <button className='bg-blue-500 rounded-full px-2 py-1'>
                         <i className='fa fa-pencil'></i>
                     </button>
-                    <button className='bg-red-500 rounded-full px-2 py-1'>
+                    <button onClick={handleLogout} className='bg-red-500 rounded-full px-2 py-1'>
                         <i className='fa fa-sign-out-alt'></i>
                     </button>
 

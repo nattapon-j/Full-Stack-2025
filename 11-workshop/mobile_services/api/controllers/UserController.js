@@ -36,6 +36,26 @@ module.exports = {
             } catch (error) {
                 res.status(500).json({ message: error.message });
             }
+        },
+        getProfile: async (req, res) => {
+            try {
+                const headers = req.headers.authorization;
+                const token = headers.split(" ")[1];
+                const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+                const user = await prisma.users.findFirst({
+                    where: {
+                        id: decoded.userId
+                    },
+                    select: {
+                        name: true,
+                        level: true,
+                    }
+                });
+                res.json(user);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
         }
     }
 }
