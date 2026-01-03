@@ -7,6 +7,7 @@ const cors = require('cors');
 const { UserController } = require('./controllers/UserController');
 const { CompanyController } = require('./controllers/CompanyController');
 const { ProductController } = require('./controllers/ProductController');
+const { SellController } = require('./controllers/SellController');
 
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+// Sell API
+app.post("/api/sell/create", SellController.create);
+
 app.post("/api/user/signin", UserController.signIn);
 app.get("/api/user/profile", UserController.getProfile);
 app.put("/api/user/updateProfile", UserController.updateProfile);
@@ -23,6 +27,7 @@ app.put("/api/user/updateProfile", UserController.updateProfile);
 app.post("/api/company/create", CompanyController.createCompany);
 app.get("/api/company/list", CompanyController.list);
 
+// Buy API
 app.post("/api/buy/add", ProductController.createProduct);
 app.get("/api/buy/list", ProductController.listProduct);
 app.put("/api/buy/update/:id", ProductController.updateProduct);
