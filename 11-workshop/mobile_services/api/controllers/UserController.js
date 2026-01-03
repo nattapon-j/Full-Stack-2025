@@ -50,9 +50,40 @@ module.exports = {
                     select: {
                         name: true,
                         level: true,
+                        username: true
                     }
                 });
                 res.json(user);
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
+        },
+        updateProfile: async (req, res) => {
+            try {
+                const headers = req.headers.authorization;
+                const token = headers.split(" ")[1];
+                const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+                const usernameExists = await prisma.users.findFirst({
+                    where: {
+                        id: decoded.userId
+                    }
+                });
+
+                const newPassword = req.body.password !== undefined ? req.body.password : usernameExists.password;
+                await prisma.users.update({
+                    where: {
+                        id: decoded.userId
+                    },
+                    data: {
+                        name: req.body.name,
+                        username: req.body.username,
+                        password: newPassword
+                    }
+                });
+                // res.json(user);
+
+                res.json({ message: 'Profile updated successfully' });
             } catch (error) {
                 res.status(500).json({ message: error.message });
             }

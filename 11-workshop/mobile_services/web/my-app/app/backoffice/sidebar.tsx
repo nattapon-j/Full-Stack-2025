@@ -7,10 +7,24 @@ import axios from 'axios';
 import { config } from '../config';
 import { useEffect, useState } from 'react';
 
+import Modal from './modal';
+
 export default function Sidebar() {
 
     const [name, setName] = useState('');
     const [level, setLevel] = useState('');
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleShowModal = () => {
+        setIsModalOpen(true);
+    }
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    }
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const router = useRouter();
 
@@ -28,6 +42,8 @@ export default function Sidebar() {
             });
             setName(response.data.name);
             setLevel(response.data.level);
+
+            setUsername(response.data.username);
         } catch (error) {
             console.error('Error fetching profile:', error);
             Swal.fire('Error', 'Failed to fetch profile information', 'error');
@@ -40,6 +56,44 @@ export default function Sidebar() {
         router.push('/');
     }
 
+    const handleEditProfile = async () => {
+        // Implement profile editing functionality here
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Passwords do not match',
+            });
+            return;
+        }
+
+        // Call API to update profile
+        const payload = {
+            username,
+            name,
+            password,
+        };
+
+        // await axios.post(`${config.apiUrl}/user/updateProfile`, payload);
+        // fetchProfile();
+        // handleCloseModal();
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put(`${config.apiUrl}/user/updateProfile`, payload, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            Swal.fire('Success', 'Profile updated successfully', 'success');
+            handleCloseModal();
+            fetchProfile();
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            Swal.fire('Error', 'Failed to update profile', 'error');
+        }
+    }
+
     return (
         <div className="bg-teal-600 h-screen w-64 fixed">
             <div className="p-5 bg-teal-800 text-white">
@@ -48,7 +102,7 @@ export default function Sidebar() {
                     <i className='fa fa-user'></i>
                     <span className='w-full'>{name} : {level}</span>
 
-                    <button className='bg-blue-500 rounded-full px-2 py-1'>
+                    <button onClick={handleShowModal} className='bg-blue-500 rounded-full px-2 py-1'>
                         <i className='fa fa-pencil'></i>
                     </button>
                     <button onClick={handleLogout} className='bg-red-500 rounded-full px-2 py-1'>
@@ -115,7 +169,31 @@ export default function Sidebar() {
                     </Link>
                 </div>
             </div>
-        </div>
+            <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="Edit Profile">
+                {/* <p>Profile editing form goes here.</p> */}
+                <div>
+                    <div>Username:</div>
+                    <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
 
+                    <div className='mt-3'>Name:</div>
+                    <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+
+                    <div className='mt-3'>Password:</div>
+                    <input className="form-control" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+
+                    <div className='mt-3'>Confirm Password:</div>
+                    <input className="form-control" type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
+
+                    <div className='mt-3'>
+                        {/* <button className='btn btn-secondary mr-2' onClick={handleCloseModal}>Cancel</button> */}
+                        <button className='btn' onClick={handleEditProfile}>
+                            <i className="fa fa-save mr-2"></i>
+                            Save
+                        </button>
+                    </div>
+
+                </div>
+            </Modal>
+        </div>
     );
 }
